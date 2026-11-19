@@ -1,0 +1,76 @@
+{
+  "CRM fails 30%, 3 retries": {
+    "unique_leads": 500,
+    "deliveries": 1022,
+    "leads_synced": 498,
+    "queued_on_first_failure": 4,
+    "unique_leads_never_synced": 0,
+    "duplicate_crm_writes": 0,
+    "duplicates_suppressed": 520,
+    "hot_alerts_sent": 237,
+    "alert_repeats": 0,
+    "crm_attempts": 709
+  },
+  "CRM fails 30%, no retries": {
+    "unique_leads": 500,
+    "deliveries": 1022,
+    "leads_synced": 437,
+    "queued_on_first_failure": 180,
+    "unique_leads_never_synced": 2,
+    "duplicate_crm_writes": 0,
+    "duplicates_suppressed": 405,
+    "hot_alerts_sent": 212,
+    "alert_repeats": 0,
+    "crm_attempts": 706
+  },
+  "CRM fails 10%, 3 retries": {
+    "unique_leads": 500,
+    "deliveries": 1022,
+    "leads_synced": 500,
+    "queued_on_first_failure": 0,
+    "unique_leads_never_synced": 0,
+    "duplicate_crm_writes": 0,
+    "duplicates_suppressed": 522,
+    "hot_alerts_sent": 238,
+    "alert_repeats": 0,
+    "crm_attempts": 566
+  },
+  "CRM fails 30%, 3 retries, 3 seeds": {
+    "seed 1": {
+      "unique_leads": 500,
+      "deliveries": 987,
+      "leads_synced": 500,
+      "queued_on_first_failure": 3,
+      "unique_leads_never_synced": 0,
+      "duplicate_crm_writes": 0,
+      "duplicates_suppressed": 484,
+      "hot_alerts_sent": 255,
+      "alert_repeats": 0,
+      "crm_attempts": 714
+    },
+    "seed 2": {
+      "unique_leads": 500,
+      "deliveries": 1008,
+      "leads_synced": 498,
+      "queued_on_first_failure": 2,
+      "unique_leads_never_synced": 0,
+      "duplicate_crm_writes": 0,
+      "duplicates_suppressed": 508,
+      "hot_alerts_sent": 225,
+      "alert_repeats": 0,
+      "crm_attempts": 732
+    },
+    "seed 3": {
+      "unique_leads": 500,
+      "deliveries": 1022,
+      "leads_synced": 498,
+      "queued_on_first_failure": 4,
+      "unique_leads_never_synced": 0,
+      "duplicate_crm_writes": 0,
+      "duplicates_suppressed": 520,
+      "hot_alerts_sent": 237,
+      "alert_repeats": 0,
+      "crm_attempts": 709
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "name": "Lead to CRM",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-lead",
+        "responseMode": "lastNode"
+      },
+      "id": "a1111111-0000-4000-8000-000000000001",
+      "name": "Lead Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.LEAD_SERVICE_URL }}/leads",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-webhook-secret", "value": "={{ $env.N8N_WEBHOOK_SECRET }}" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 10000,
+          "retry": { "maxTries": 3 }
+        }
+      },
+      "id": "a1111111-0000-4000-8000-000000000002",
+      "name": "Score and Sync to CRM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 200],
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "typeValidation": "loose" },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.tier }}",
+              "rightValue": "hot",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "a1111111-0000-4000-8000-000000000003",
+      "name": "Is Hot Lead?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [480, 200]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.alert }) }}"
+      },
+      "id": "a1111111-0000-4000-8000-000000000004",
+      "name": "Alert Sales on Slack",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 100]
+    },
+    {
+      "parameters": {
+        "content": "Lead service failed after 3 retries. Review in n8n executions and re-run the failed item.",
+        "height": 80,
+        "width": 300
+      },
+      "id": "a1111111-0000-4000-8000-000000000005",
+      "name": "Failure Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [240, 360]
+    }
+  ],
+  "connections": {
+    "Lead Webhook": {
+      "main": [[{ "node": "Score and Sync to CRM", "type": "main", "index": 0 }]]
+    },
+    "Score and Sync to CRM": {
+      "main": [
+        [{ "node": "Is Hot Lead?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Is Hot Lead?": {
+      "main": [
+        [{ "node": "Alert Sales on Slack", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "tags": ["lead-automation", "portfolio"]
+}
